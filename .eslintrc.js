@@ -24,5 +24,6 @@ module.exports = {
     quotes: [2, 'single', { avoidEscape: true }],
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
 };

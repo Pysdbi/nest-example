@@ -2,18 +2,6 @@ import { TransformFnParams } from 'class-transformer';
 
 export type TransformFunction = (params: Partial<TransformFnParams>) => any;
 
-export function toLowerCase(value: string): string {
-  return value.toLowerCase();
-}
-
-export function toUpperCase({ value }: TransformFnParams): string {
-  return value.toUpperCase();
-}
-
-export function trim(value: string): string {
-  return value.trim();
-}
-
 export function toDate({ value }: TransformFnParams): Date {
   return value ? new Date(value) : null;
 }

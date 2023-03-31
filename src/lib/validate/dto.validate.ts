@@ -12,6 +12,7 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  ValidateIf,
   ValidateNested,
   ValidationOptions,
 } from 'class-validator';
@@ -27,7 +28,7 @@ import {
   transformToBoolean,
   transformToNumber,
   transformToString,
-} from '../helpers';
+} from '@helpers';
 import { Options, RootOption, ValidationType } from './dto.validate.interface';
 
 function defaultValidateDecorations(options: RootOption) {
@@ -43,6 +44,11 @@ function defaultValidateDecorations(options: RootOption) {
   const isOptional = options?.optional ?? true;
   const isArray = options?.isArray ?? false;
 
+  // ======--- Options ---======
+  if (!isOptional && typeof options?.required === 'function') {
+    decorates.push(ValidateIf(options.required));
+  } else if (isOptional) decorates.push(IsOptional());
+
   // ======--- Type ---======
   const IsTypes = {
     string: IsString,
@@ -51,14 +57,12 @@ function defaultValidateDecorations(options: RootOption) {
     date: IsDate,
     object: IsObject,
   };
+
   const isTypeFunc = IsTypes[options.type]({ each: isArray });
   if (options?.type) decorates.push(isTypeFunc);
 
   // ======--- Is Array ---======
   if (options?.isArray) decorates.push(IsArray());
-
-  // ======--- Options ---======
-  if (isOptional) decorates.push(IsOptional());
 
   // ======--- Swagger ---======
   const SwaggerType = {
@@ -116,7 +120,7 @@ function defaultValidateDecorations(options: RootOption) {
 // =======---=======---======= Validate =======---=======---=======
 export class Validate {
   private static getOptions<T extends ValidationType>(
-    options: Options[T] = {} as Options[T],
+    options: Options[T],
     type?: ValidationType,
     objectType?: any,
   ): RootOption {
@@ -128,7 +132,7 @@ export class Validate {
     return opt;
   }
 
-  static String(options?: Options['string']) {
+  static String(options: Options['string']) {
     const opt = Validate.getOptions(options, 'string');
     const decorates = [...defaultValidateDecorations(opt)];
 
@@ -141,7 +145,7 @@ export class Validate {
     return applyDecorators(...decorates);
   }
 
-  static Number(options?: Options['number']) {
+  static Number(options: Options['number']) {
     const opt = Validate.getOptions(options, 'number');
     const decorates = [...defaultValidateDecorations(opt)];
 
@@ -149,7 +153,7 @@ export class Validate {
 
     return applyDecorators(...decorates);
   }
-  static Boolean(options?: Options['boolean']) {
+  static Boolean(options: Options['boolean']) {
     const opt = Validate.getOptions(options, 'boolean');
     const decorates = [...defaultValidateDecorations(opt)];
 
@@ -158,7 +162,7 @@ export class Validate {
     return applyDecorators(...decorates);
   }
 
-  static Date(options?: Options['date']) {
+  static Date(options: Options['date']) {
     const opt = Validate.getOptions(options, 'date');
     const decorates = [...defaultValidateDecorations(opt)];
 
@@ -166,7 +170,7 @@ export class Validate {
 
     return applyDecorators(...decorates);
   }
-  static Object(options?: Options['object']) {
+  static Object(options: Options['object']) {
     const opt = Validate.getOptions(options, 'object', options?.type);
     const decorates = [...defaultValidateDecorations(opt)];
 

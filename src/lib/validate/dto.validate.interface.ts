@@ -1,5 +1,5 @@
 import { ApiPropertyOptions } from '@nestjs/swagger/dist/decorators/api-property.decorator';
-import { TransformFunction } from '../helpers';
+import { TransformFunction } from '@helpers';
 
 export type ValidationType =
   | 'number'
@@ -12,10 +12,10 @@ export type RootOption = {
   type?: ValidationType;
   objectType?: any;
   apiProperty?: ApiPropertyOptions;
-  required?: boolean; // default=false
-  optional?: boolean; // default=true --> Use require: true
+  required?: boolean | ((o: any) => boolean); // default=false
+  optional?: boolean; // default=false --> Use require: true
   isArray?: boolean;
-  description?: string;
+  description: string;
   apiPropertyType?: 'hide' | 'optional';
 
   transform?: {

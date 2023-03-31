@@ -1,12 +1,12 @@
-import { Validate } from '../../../lib/validate';
+import { Validate } from '@validate';
 
 export class CreateCompanyDto {
-  @Validate.String({ required: true })
+  @Validate.String({ required: true, description: '' })
   name: string;
 
-  @Validate.String({ required: true, maxLength: 3 })
+  @Validate.String({ required: true, maxLength: 3, description: '' })
   domain: string;
 
-  @Validate.String({ required: true })
+  @Validate.String({ required: true, description: '' })
   description: string;
 }

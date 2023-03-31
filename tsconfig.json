@@ -17,6 +17,15 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "lib": ["ES2021.String"]
+    "resolveJsonModule": true,
+    "lib": [
+      "ES2021"
+    ],
+    "paths": {
+      "@helpers": [ "src/lib/helpers" ],
+      "@validate": [ "src/lib/validate" ],
+      "@domains/*": [ "src/lib/domains/*" ],
+      "@/*": ["src/*"]
+    }
   }
 }
